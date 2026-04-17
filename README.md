@@ -114,7 +114,10 @@ kubectl get nodes
 Deploy the base resources:
 
 ```bash
-kubectl apply -k k8s/overlays/local
+scripts/local/bootstrap-local.sh
+# of handmatig:
+scripts/local/install-operators.sh
+kubectl apply -k k8s/base/overlays/local
 ```
 
 Verify namespace:
@@ -200,8 +203,8 @@ k3d cluster create stackable-poc
 
 ## Next Steps
 
-- Install Stackable operators
-- Deploy Trino, Hive Metastore, and MinIO
-- Load sample dataset
+- Install Stackable operators (scripts/local/install-operators.sh of scripts/ionos/install-operators.sh)
+- Deploy Trino, Hive Metastore, and MinIO (kubectl apply -k k8s/base/overlays/<env>)
+- Load sample dataset (scripts/local/load-sample-data.sh)
 - Run first queries
 

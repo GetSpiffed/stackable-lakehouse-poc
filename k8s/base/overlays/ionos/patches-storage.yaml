@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: minio-data
+  namespace: data-platform
+spec:
+  storageClassName: ionos-enterprise-hdd
