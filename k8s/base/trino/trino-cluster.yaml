@@ -1,0 +1,19 @@
+apiVersion: trino.stackable.tech/v1alpha1
+kind: TrinoCluster
+metadata:
+  name: trino
+  namespace: data-platform
+spec:
+  image:
+    productVersion: "476"
+  catalogLabelSelector:
+    matchLabels:
+      trino: trino
+  coordinators:
+    roleGroups:
+      default:
+        replicas: 1
+  workers:
+    roleGroups:
+      default:
+        replicas: 1
