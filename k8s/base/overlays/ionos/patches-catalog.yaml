@@ -1,0 +1,23 @@
+# Strategic merge patch: overrides the S3 section in TrinoCatalog for IONOS.
+# Create the 'ionos-s3-credentials' Secret from secrets.ionos.example.yaml before deploying.
+apiVersion: trino.stackable.tech/v1alpha1
+kind: TrinoCatalog
+metadata:
+  name: hive
+  namespace: data-platform
+spec:
+  connector:
+    hive:
+      s3:
+        endpoint: https://s3-eu-central-2.ionoscloud.com
+        accessKey:
+          secret:
+            name: ionos-s3-credentials
+            key: accessKey
+        secretKey:
+          secret:
+            name: ionos-s3-credentials
+            key: secretKey
+        pathStyleAccess: false
+        ssl:
+          enabled: true

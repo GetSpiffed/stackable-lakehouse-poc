@@ -33,9 +33,14 @@ if ! kubectl -n "${NAMESPACE}" get svc "${TRINO_SERVICE}" >/dev/null 2>&1; then
 fi
 
 echo "[INFO] Ensuring MinIO bucket '${SAMPLE_BUCKET}' exists"
+MINIO_USER=$(kubectl -n "${NAMESPACE}" get secret minio-credentials -o jsonpath='{.data.rootUser}' | base64 -d)
+MINIO_PASS=$(kubectl -n "${NAMESPACE}" get secret minio-credentials -o jsonpath='{.data.rootPassword}' | base64 -d)
+
 kubectl -n "${NAMESPACE}" run minio-mc --rm -i --restart=Never \
-  --image=minio/mc:RELEASE.2026-03-24T08-29-49Z -- \
-  sh -c "mc alias set local http://minio:9000 minioadmin minioadmin123 >/dev/null && mc mb --ignore-existing local/${SAMPLE_BUCKET}"
+  --image=minio/mc:RELEASE.2026-03-24T08-29-49Z \
+  --env="MINIO_USER=${MINIO_USER}" \
+  --env="MINIO_PASS=${MINIO_PASS}" \
+  -- sh -c 'mc alias set local http://minio:9000 "${MINIO_USER}" "${MINIO_PASS}" >/dev/null && mc mb --ignore-existing "local/'"${SAMPLE_BUCKET}"'"'
 
 echo "[INFO] Creating/updating SQL configmap"
 kubectl -n "${NAMESPACE}" create configmap trino-sql-bootstrap \
