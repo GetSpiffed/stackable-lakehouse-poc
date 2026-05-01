@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -eu
 
 CLUSTER_NAME="${CLUSTER_NAME:-stackable-poc}"
 K3D_SERVERS="${K3D_SERVERS:-1}"
