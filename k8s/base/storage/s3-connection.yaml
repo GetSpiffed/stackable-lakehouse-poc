@@ -1,0 +1,24 @@
+apiVersion: secrets.stackable.tech/v1alpha1
+kind: SecretClass
+metadata:
+  name: minio-s3-credentials
+spec:
+  backend:
+    k8sSearch:
+      searchNamespace:
+        pod: {}
+---
+apiVersion: s3.stackable.tech/v1alpha1
+kind: S3Connection
+metadata:
+  name: minio
+  namespace: data-platform
+spec:
+  host: minio.data-platform.svc.cluster.local
+  port: 9000
+  pathStyleAccess: true
+  tls:
+    verification:
+      none: {}
+  credentials:
+    secretClass: minio-s3-credentials
