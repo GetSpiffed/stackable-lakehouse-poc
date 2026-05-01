@@ -10,6 +10,7 @@ spec:
     database:
       connString: jdbc:postgresql://postgres.data-platform.svc.cluster.local:5432/metastore
       credentialsSecret: postgres-credentials
+      dbType: postgres
   metastore:
     roleGroups:
       default:

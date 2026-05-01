@@ -6,9 +6,10 @@ metadata:
 spec:
   image:
     productVersion: "476"
-  catalogLabelSelector:
-    matchLabels:
-      trino: trino
+  clusterConfig:
+    catalogLabelSelector:
+      matchLabels:
+        trino: trino
   coordinators:
     roleGroups:
       default:
