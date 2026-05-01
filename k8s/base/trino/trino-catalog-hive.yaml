@@ -11,15 +11,9 @@ spec:
       metastore:
         configMap: hive-metastore
       s3:
-        endpoint: http://minio.data-platform.svc.cluster.local:9000
-        accessKey:
-          secret:
-            name: minio-credentials
-            key: rootUser
-        secretKey:
-          secret:
-            name: minio-credentials
-            key: rootPassword
-        pathStyleAccess: true
-        ssl:
-          enabled: false
+        inline:
+          host: minio.data-platform.svc.cluster.local
+          port: 9000
+          accessStyle: Path
+          credentials:
+            secretClass: minio-s3-credentials

@@ -7,15 +7,12 @@ spec:
   connector:
     hive:
       s3:
-        endpoint: https://s3-eu-central-2.ionoscloud.com
-        accessKey:
-          secret:
-            name: ionos-s3-credentials
-            key: accessKey
-        secretKey:
-          secret:
-            name: ionos-s3-credentials
-            key: secretKey
-        pathStyleAccess: false
-        ssl:
-          enabled: true
+        inline:
+          host: s3-eu-central-2.ionoscloud.com
+          port: 443
+          accessStyle: VirtualHosted
+          credentials:
+            secretClass: ionos-s3-credentials
+          tls:
+            verification:
+              server: {}

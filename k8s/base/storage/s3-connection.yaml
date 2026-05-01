@@ -16,7 +16,7 @@ metadata:
 spec:
   host: minio.data-platform.svc.cluster.local
   port: 9000
-  pathStyleAccess: true
+  accessStyle: Path
   tls:
     verification:
       none: {}
