@@ -18,8 +18,27 @@ wait_for_deployment() {
     return 0
   fi
 
+  local replicas
+  replicas="$(kubectl -n "${namespace}" get "deployment/${deployment}" -o jsonpath='{.spec.replicas}')"
+  replicas="${replicas:-1}"
+
   echo "[INFO] Restarting deployment/${deployment} to recover from a stale failed rollout state"
   kubectl -n "${namespace}" rollout restart "deployment/${deployment}" >/dev/null
+
+  if kubectl -n "${namespace}" rollout status "deployment/${deployment}" --timeout="${timeout}"; then
+    return 0
+  fi
+
+  echo "[WARN] rollout restart for deployment/${deployment} timed out; forcing recreate by scaling to zero"
+  kubectl -n "${namespace}" scale "deployment/${deployment}" --replicas=0 >/dev/null
+  local selector
+  selector="$(kubectl -n "${namespace}" get "deployment/${deployment}" -o jsonpath='{range $k,$v := .spec.selector.matchLabels}{$k}={$v},{end}' | sed 's/,$//')"
+  if [ -n "${selector}" ]; then
+    kubectl -n "${namespace}" wait --for=delete pod -l "${selector}" --timeout=120s >/dev/null 2>&1 || true
+  fi
+
+  echo "[INFO] Scaling deployment/${deployment} back to ${replicas} replica(s)"
+  kubectl -n "${namespace}" scale "deployment/${deployment}" --replicas="${replicas}" >/dev/null
   kubectl -n "${namespace}" rollout status "deployment/${deployment}" --timeout="${timeout}"
 }
 
