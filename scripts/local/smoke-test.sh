@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -eu
 
 echo "[INFO] Checking MinIO and Postgres deployments"
 kubectl -n data-platform wait deployment/minio --for=condition=Available --timeout=120s

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -eu
 
 STACKABLE_VERSION="${STACKABLE_VERSION:-26.3.0}"
 OPERATORS=(commons secret listener hive trino)

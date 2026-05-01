@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -eu
 
 NAMESPACE="${NAMESPACE:-data-platform}"
 TRINO_SERVICE="${TRINO_SERVICE:-trino-coordinator-default}"
