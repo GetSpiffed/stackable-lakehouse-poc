@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -eu
+
+# Avoid `pipefail` here because some Windows/WSL checkouts can inject CRLF
+# and make `set -o pipefail` fail with `invalid option name`.
+# Keep strict mode with `-e` and `-u` for portability.
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/../.." && pwd)"
