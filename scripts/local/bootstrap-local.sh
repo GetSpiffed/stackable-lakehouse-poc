@@ -32,7 +32,7 @@ wait_for_deployment() {
   echo "[WARN] rollout restart for deployment/${deployment} timed out; forcing recreate by scaling to zero"
   kubectl -n "${namespace}" scale "deployment/${deployment}" --replicas=0 >/dev/null
   local selector
-  selector="$(kubectl -n "${namespace}" get "deployment/${deployment}" -o jsonpath='{range $k,$v := .spec.selector.matchLabels}{$k}={$v},{end}' | sed 's/,$//')"
+  selector="$(kubectl -n "${namespace}" get "deployment/${deployment}" -o go-template='{{range $k, $v := .spec.selector.matchLabels}}{{printf "%s=%s," $k $v}}{{end}}' | sed 's/,$//')"
   if [ -n "${selector}" ]; then
     kubectl -n "${namespace}" wait --for=delete pod -l "${selector}" --timeout=120s >/dev/null 2>&1 || true
   fi
