@@ -42,8 +42,33 @@ wait_for_deployment() {
   kubectl -n "${namespace}" rollout status "deployment/${deployment}" --timeout="${timeout}"
 }
 
+MINIO_IMAGE="quay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z"
+
+
+validate_image_exists() {
+  local image="$1"
+
+  echo "[INFO] Validating image availability: ${image}"
+  if ! docker manifest inspect "${image}" >/dev/null 2>&1; then
+    echo "[ERROR] Container image is unavailable: ${image}"
+    echo "[ERROR] Update the pinned image tag before applying Kubernetes manifests."
+    exit 1
+  fi
+}
+
+run_image_preflight_checks() {
+  local image
+  for image in "$@"; do
+    validate_image_exists "${image}"
+  done
+}
+
 "${SCRIPT_DIR}/create-k3d-cluster.sh"
 "${SCRIPT_DIR}/install-operators.sh"
+
+run_image_preflight_checks \
+  "${MINIO_IMAGE}"
+
 kubectl apply -k "${REPO_ROOT}/k8s/overlays/local"
 
 echo "[INFO] Waiting for MinIO and Postgres to be ready"
