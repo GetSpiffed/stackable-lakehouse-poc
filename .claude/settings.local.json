@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(gh pr create --title 'Fix Hive Metastore durability, kustomize layout and operational hardening' --body ' *)",
+      "Bash(curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg)",
+      "Bash(dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg)",
+      "Bash(dpkg --print-architecture)",
+      "Bash(echo \"deb [arch=$\\(dpkg --print-architecture\\) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main\")",
+      "Bash(tee /etc/apt/sources.list.d/github-cli.list)",
+      "Bash(apt-get update *)",
+      "Bash(apt-get install *)",
+      "Bash(cd /tmp)",
+      "Bash(curl -sLo gh.tar.gz https://github.com/cli/cli/releases/download/v2.72.0/gh_2.72.0_linux_amd64.tar.gz)",
+      "Bash(tar xzf *)",
+      "Bash(mkdir -p ~/bin)",
+      "Bash(cp gh_2.72.0_linux_amd64/bin/gh ~/bin/)"
+    ]
+  }
+}
